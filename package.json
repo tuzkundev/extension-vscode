@@ -1,0 +1,95 @@
+{
+  "name": "clean-unused-imports",
+  "displayName": "Clean Unused Imports",
+  "description": "Remove unused imports and organize imports across your entire workspace for JavaScript, TypeScript, JSX, and TSX files",
+  "version": "1.0.0",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.86.0"
+  },
+  "categories": [
+    "Other",
+    "Formatters"
+  ],
+  "keywords": [
+    "imports",
+    "cleanup",
+    "organize",
+    "typescript",
+    "javascript",
+    "jsx",
+    "tsx"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.cleanUnusedImports",
+        "title": "Clean Unused Imports (Whole Project)"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "extension.cleanUnusedImports",
+          "when": "resourceExtname =~ /\\.(js|jsx|ts|tsx)$/"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Clean Unused Imports",
+      "properties": {
+        "cleanUnusedImports.removeUnusedVariables": {
+          "type": "boolean",
+          "default": true,
+          "description": "Remove unused variables (TS6133)"
+        },
+        "cleanUnusedImports.removeUnusedFunctions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Remove unused functions (TS6192, TS6196)"
+        },
+        "cleanUnusedImports.removeUnusedProps": {
+          "type": "boolean",
+          "default": true,
+          "description": "Remove unused React component props"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "lint:fix": "eslint src --ext ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "@typescript-eslint/parser": "^6.13.0",
+    "@typescript-eslint/utils": "^6.13.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.86.0",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.0",
+    "@vscode/vsce": "^2.22.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/clean-unused-imports.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/clean-unused-imports/issues"
+  },
+  "homepage": "https://github.com/your-username/clean-unused-imports#readme",
+  "license": "MIT"
+}
