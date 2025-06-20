@@ -1,208 +1,85 @@
-# Clean Unused Imports
+# Clean Unused Code – VS Code Extension
 
-A comprehensive VS Code extension that cleans up your codebase by removing unused imports, variables, functions, and React props across your entire workspace for JavaScript, TypeScript, JSX, and TSX files.
+Tidy up your JavaScript / TypeScript projects with a single command.  
+The extension sweeps the entire workspace, deletes dead code, and keeps the rest of your files squeaky-clean—without touching any `console.log` or `debugger` statements.
 
-## Features
+---
 
-- **Workspace-wide cleaning**: Processes all JS/TS files in your workspace folders
-- **Multiple cleanup rules**: Remove unused imports, variables, functions, and React props
-- **Configurable**: Each cleanup rule can be individually enabled/disabled
-- **Smart traversal**: Automatically skips common build/dependency directories (`node_modules`, `.git`, `dist`, `.next`, `out`)
-- **Progress tracking**: Shows cancellable progress notification with current file and percentage
-- **Selective saving**: Only saves files that were actually modified
-- **Built-in integration**: Uses VS Code's native code actions and TypeScript diagnostics
+## ✨ What it can do
 
-## Supported File Types
+1. **Remove unused imports** (built-in _Organize Imports_ refactor).
+2. **Remove variables that are declared but never read**.
+3. **Remove functions that are never called** (top-level or exported).
+4. **Remove React component props that are passed-in but never used**.
+5. Cancellable progress bar, auto-save only when edits were made.
+6. All rules are optional and can be toggled independently from the settings UI.
 
-- JavaScript (`.js`)
-- TypeScript (`.ts`)
-- JSX (`.jsx`)
-- TSX (`.tsx`)
+---
 
-## Installation
+## 🛠️ Installation
 
-### From Source
+### From the Marketplace
 
-1. Clone this repository
-2. Run `npm install` to install dependencies
-3. Run `npm run compile` to build the extension
-4. Press `F5` to open a new Extension Development Host window
-5. Test the extension in the new window
+1. Open VS Code ➜ Extensions view.
+2. Search for **"Clean Unused Code"** and click **Install**.
 
-### From VSIX Package
+### Manual (.vsix)
 
-1. Build the package: `npm run package`
-2. Install the generated `.vsix` file: `code --install-extension clean-unused-imports-1.0.0.vsix`
+```bash
+# if you cloned the repo
+npm install
+npm run package          # produces clean-unused-code-<version>.vsix
+code --install-extension clean-unused-code-<version>.vsix
+```
 
-## Cleanup Rules
+---
 
-### 1. Organize Imports (Always Active)
+## 🚀 Quick Start
 
-- Removes unused imports
-- Sorts remaining imports
-- Uses VS Code's built-in `source.organizeImports` action
+1. Open the folder you want to clean.
+2. Press **Ctrl / Cmd + Shift + P** and run  
+   **"Clean Unused Imports (Whole Project)"**.
+3. Watch the progress notification; cancel any time.
+4. When the toast "Project clean-up complete ✅" appears, you're done!
 
-### 2. Remove Unused Variables (Configurable)
+---
 
-- Detects variables declared but never read (TS6133)
-- Applies TypeScript's "Remove declaration" quick-fix
-- Preserves console.log and debugger statements
+## ⚙️ Configuration
 
-### 3. Remove Unused Functions (Configurable)
+File → Preferences → Settings → "Clean Unused Code" (searchable), or edit _settings.json_:
 
-- Detects top-level or exported functions never referenced (TS6192, TS6196)
-- Applies TypeScript's quick-fix actions
-- Preserves console.log and debugger statements
-
-### 4. Remove Unused React Props (Configurable)
-
-- Analyzes React function components for unused props
-- Removes unused props from destructured parameters
-- Skips components using spread operator (...props)
-- Basic implementation for common patterns
-
-## Configuration
-
-Configure which cleanup rules are active in VS Code settings:
-
-```json
+```jsonc
 {
-  "cleanUnusedImports.removeUnusedVariables": true,
-  "cleanUnusedImports.removeUnusedFunctions": true,
-  "cleanUnusedImports.removeUnusedProps": true
+  // package.json › configuration
+  "cleanUnusedImports.removeUnusedVariables": true, // delete unused let/const/var
+  "cleanUnusedImports.removeUnusedFunctions": true, // delete never-called functions
+  "cleanUnusedImports.removeUnusedProps": false, // delete unused React props
 }
 ```
 
-Or use the VS Code Settings UI:
+Toggle any of them, re-run the command, and only the enabled rules are applied.
 
-1. Open Settings (`Ctrl+,` / `Cmd+,`)
-2. Search for "Clean Unused Imports"
-3. Toggle individual cleanup rules on/off
+---
 
-## Usage
+## 📚 Usage Tips
 
-1. Open a workspace containing JavaScript/TypeScript files
-2. Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
-3. Search for "Clean Unused Imports (Whole Project)"
-4. Execute the command
-5. Monitor progress in the notification
-6. Cancel anytime if needed
+• **On-demand only** by design—bind the command to a custom key if you prefer.  
+• Combine with VS Code's "Format Document" on save for an all-in-one hygiene workflow.  
+• Running in CI? Use `code --install-extension` followed by `code --command extension.cleanUnusedImports` inside a headless VS Code instance (via `xvfb-run` on Linux).
 
-The extension will:
+---
 
-- Read your configuration settings
-- Recursively find all supported files in your workspace
-- Apply enabled cleanup rules to each file
-- Show progress with current file path and percentage
-- Display a summary of modified files when complete
+## 🙋 FAQ
 
-## Development
+**Q: Will it delete my debug prints?**  
+A: No. The extension explicitly ignores `console.*` calls and `debugger` statements.
 
-### Prerequisites
+**Q: Which languages are supported?**  
+A: `.js`, `.jsx`, `.ts`, and `.tsx`. Support for more languages can be added via pull request.
 
-- Node.js 18.x or later
-- VS Code 1.86.0 or later
+**Q: How does it detect unused React props?**  
+A: It parses each component with the TypeScript AST and checks prop identifiers against the component body, skipping any component that uses the spread operator (`...props`).
 
-### Setup
+---
 
-```bash
-# Install dependencies
-npm install
-
-# Compile TypeScript
-npm run compile
-
-# Watch for changes during development
-npm run watch
-
-# Run linting
-npm run lint
-
-# Fix linting issues
-npm run lint:fix
-
-# Format code
-npm run format
-```
-
-### Testing
-
-1. Press `F5` to launch Extension Development Host
-2. Open a test workspace with JS/TS files
-3. Run the "Clean Unused Imports (Whole Project)" command
-4. Verify the extension works as expected
-
-### Building
-
-```bash
-# Compile for production
-npm run compile
-
-# Create VSIX package
-npm run package
-```
-
-## Publishing
-
-1. Install vsce: `npm install -g @vscode/vsce`
-2. Update publisher name in `package.json`
-3. Create package: `npm run package`
-4. Publish: `vsce publish`
-
-## Advanced Configuration
-
-The extension works out of the box with default settings enabled. It uses VS Code's built-in TypeScript/JavaScript language services and diagnostics for code analysis.
-
-### Excluded Directories
-
-The following directories are automatically skipped during traversal:
-
-- `node_modules`
-- `.git`
-- `dist`
-- `.next`
-- `out`
-- `.vscode`
-- `coverage`
-- `build`
-- `.nyc_output`
-
-## Requirements
-
-- VS Code 1.86.0 or later
-- TypeScript/JavaScript language support enabled
-
-## Known Issues
-
-- The extension relies on VS Code's built-in TypeScript diagnostics and code actions, so results may vary based on your TypeScript/JavaScript configuration
-- React props removal is a basic implementation that handles common patterns but may not cover all edge cases
-- Very large workspaces may take some time to process
-- Console.log and debugger statements are preserved and will not be removed
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## License
-
-MIT License - see LICENSE file for details
-
-## Changelog
-
-### 1.0.0
-
-- Initial release with comprehensive cleanup features
-- Support for JS, TS, JSX, TSX files
-- Workspace-wide cleaning with multiple rules:
-  - Organize imports (always active)
-  - Remove unused variables (TS6133)
-  - Remove unused functions (TS6192, TS6196)
-  - Remove unused React props (basic implementation)
-- Configurable cleanup rules via VS Code settings
-- Progress tracking with cancellation support
-- Smart directory exclusion
-- Preserves console.log and debugger statements
+Happy coding & keep your project spotless!
