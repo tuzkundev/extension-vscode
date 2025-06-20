@@ -1,3 +1,5 @@
+https://marketplace.visualstudio.com/items?itemName=nguyenqq.clean-unused-imports
+
 # Clean Unused Code – VS Code Extension
 
 Tidy up your JavaScript / TypeScript projects with a single command.  
