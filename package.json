@@ -2,7 +2,7 @@
   "name": "clean-unused-imports",
   "displayName": "Clean Unused Imports",
   "description": "Remove unused imports and organize imports across your entire workspace for JavaScript, TypeScript, JSX, and TSX files",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "nguyenqq",
   "icon": "assets/mac-pro-max.png",
   "galleryBanner": {
